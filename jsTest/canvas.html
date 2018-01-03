@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>每日一练 canvas</title>
+</head>
+<body>
+	<canvas id="test" width="400" height="400"></canvas> 
+</body>
+<script type="text/javascript">
+	var drawing = document.getElementById("test");
+	console.log(211111);
+	if(drawing.getContext){//填充和描边
+		var context = drawing.getContext("2d");
+	
+		//绘制红色矩形
+		context.fillStyle = "#ff0000";//填充颜色
+		context.fillRect(10,10,150,150);
+		
+		context.fillStyle = "rgba(0,0,255,0.5)";
+		context.fillRect(30,30,150,150);
+
+
+		//清除2个矩形重合的区域
+		context.clearRect(50,50,50,50);
+
+
+
+		//绘制红色描边矩形
+		context.strokeStyle = "red";
+		context.strokeRect(200,10,150,150);
+
+		context.strokeStyle = "rgba(0,0,255,0.5)";
+		context.strokeRect(230,30,150,150);
+
+		//绘制路径
+
+		//开发路径
+		context.beginPath();
+
+		//绘制外圆
+		context.arc(200,200,99,0,2*Math.PI,false);
+
+		context.moveTo(290,200);
+
+		//绘制内圆
+		context.arc(200,200,90,0,2*Math.PI,false);
+
+		//绘制分针
+		//context.moveTo(200,200);
+		context.translate(200,200);
+		context.moveTo(0,0);
+		context.rotate(1)
+		//context.lineTo(200,125);
+		context.lineTo(0,-85)
+
+		context.moveTo(0,0);
+		context.lineTo(-65,0);
+		//绘制时针
+		//context.moveTo(200,200);
+		//context.moveTo(0,0);
+		//context.lineTo(115,200);
+
+		//描绘路径
+		context.stroke();
+
+
+		//绘制字体
+		context.font = "bold 14px Arial";
+		context.textAlign = "center";
+		context.textBaseLine = "middle";
+		context.fillText("12",200,105);
+
+		//起点对齐
+		context.textAlign = "start";
+		context.fillText("12",200,120);
+
+		//终点对齐
+		context.textAlign = "end";
+		context.fillText("12",200,130);
+
+
+		//绘制合适的
+				
+	}
+
+</script>
+<style type="text/css">
+	div{
+		width: 500px;
+		height: 500px
+	}
+</style>
+</html>

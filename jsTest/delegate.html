@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>js事件委托每日一练</title>
+</head>
+<body>
+	<div class="parent" id="parent">
+			<div class="child1" id="child">
+				child
+			</div>
+			<a class="child2">child2</a>
+	 </div>
+</body>
+<script type="text/javascript">
+	delegate("body","div","click",function(e){
+		console.log(111111);
+		console.log(e);
+	});
+
+	delegate("body",".child2","click",function(e){
+		console.log(e);
+	});
+	 function delegate(father,child,type,handler){
+	 	var par = document.getElementById(father);//处理下父组件未id class tag的情况 
+	 	child = trim(child);
+	 	var fatherS = parseFather(father);
+	 	var length = fatherS.length;
+	 	for(var i = 0;i<length;i++){
+	 		var tmp = fatherS[i];
+	 		tmp.addEventListener(type,function(e){//默认是捕获阶段
+		 		var target = e.target;
+		 		//console.log(e.target);
+		 		if(isID(child)){
+		 			if("#"+target.getAttribute("id") == child){
+		 					handler(e);
+		 			}
+		 		}
+
+		 		if(isTag(child)){
+		 			if(target.tagName == child.toLocaleUpperCase()){
+		 				handler(e);
+		 			}
+		 		}
+
+		 		if(isClassSelector(child)){
+		 			if("."+target.getAttribute("class") == child){//这里需要处理一下，class为多个的情况
+		 				handler(e);
+		 			}
+		 		}
+	 	});
+	 	}
+
+	 }
+
+	 function parseFather(father){
+	 	var elementArray = [];
+	 	if(isID(father)){
+	 		elementArray.push(document.getElementById(father.substring(1)));
+	 	};
+	 	if(isTag(father)){
+	 		elementArray = Array.prototype.slice.call(document.getElementsByTagName(father));
+	 	}
+	 	if(isClassSelector(father)){//getElementsByClassName
+	 		elementArray = Array.prototype.slice.call(document.querySelectorAll(father));
+	 	}
+
+	 	return elementArray;
+	 }
+
+	 /**
+		思考：js 中获得元素的方式 
+		     html中元素的类型 看下dom
+		     一个元素获得他属性的方式 tagName 属性  子元素
+		     获得元素的几种方式 id  tag  class
+	 */
+
+	 function trim(selector){
+	 	return selector.replace(/\s/g,"");
+	 }
+
+	 function isID(selector){
+	 	//去除空格
+	 	selector = trim(selector);
+	 	if(selector.indexOf("#") == 0){
+	 		return true;	
+	 	}
+	 	return false;
+	 }
+
+	 function isTag(selector){
+	 	selector = trim(selector);
+	 	return /^[a-z]+$/.test(selector);
+	 }
+
+	 function isClassSelector(selector){
+	 	selector = trim(selector);
+	 	return selector.indexOf(".") == 0;
+	 }
+
+
+	 function c(){ //=> 指向Function 
+	 	this.constructor = "1";	
+	 }
+
+	 function f(){
+
+	 }
+
+	 f.bbb = 123;
+
+	 var b = new c();
+
+	 c.prototype = f;
+	 c.prototype.constructor = c;
+
+	 console.log(c.prototype);
+	 console.log(c == c.prototype.constructor);
+
+
+
+	 var d = new c();
+
+	 d.prototype = function x(){
+
+	 }
+
+</script>
+<style type="text/css">
+	.parent{
+		height:400px;
+		background-color:red
+	}
+
+	.child1{
+		top:40px;
+		height: 50px;
+		background-color: black;
+		position: relative;
+	}
+
+	.child2{
+		display: block;
+				top:40px;
+		height: 50px;
+		background-color: yellow;
+		position: relative;
+	}
+</style>
+</html>
